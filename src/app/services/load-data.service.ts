@@ -3,8 +3,8 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from '../../environments/environment';
 import { DataActionNames } from '../types/data-action-names.type';
 import { Observable } from 'rxjs';
-import {map, pluck} from 'rxjs/operators';
-import {DataSubject} from '../types/data-subject.type';
+import { map, pluck } from 'rxjs/operators';
+import { DataSubject } from '../types/data-subject.type';
 
 @Injectable({
   providedIn: 'root'

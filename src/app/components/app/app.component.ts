@@ -1,73 +1,72 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
-import {LoadDataService} from '../../services/load-data.service';
-import {Observable} from 'rxjs';
-import {LoadData} from '../../types/load-data.type';
-import {map} from 'rxjs/operators';
-import {ChartType} from 'angular-google-charts';
-import {LoadNotificationsService} from '../../services/load-notifications.service';
-import {NzMessageService} from 'ng-zorro-antd/message';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { LoadDataService } from '../../services/load-data.service';
+import { Observable } from 'rxjs';
+import { LoadData } from '../../types/load-data.type';
+import { LoadNotificationsService } from '../../services/load-notifications.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { TimelineItem } from '../../types/timeline-item.type';
 
 @Component({
-  selector: 'app-root',
+  selector: 'lm-app',
   template: `
-    <nz-card nzTitle="Current average load">
-      <span nz-typography [nzType]="(averageLoad$ | async) || 0 < 1 ? 'success' : 'danger'">
-        {{ averageLoad$ | async }}
-      </span>
-    </nz-card>
-    <nz-card nzTitle="Number of CPU">{{ cpuCount$ | async }}</nz-card>
-    <nz-card nzTitle="Average load over last 10 minutes">
-      <span nz-typography [nzType]="(averageLoadOverTime$ | async) || 0 < 1 ? 'success' : 'danger'">
-        {{ averageLoadOverTime$ | async }}
-      </span>
-    </nz-card>
-    <google-chart
-      *ngIf="loadValuesOverTime$ | async as loadValuesOverTime"
-      [type]="chartType.ColumnChart"
-      [data]="loadValuesOverTime"
-      [columns]="['time', 'load', { role: 'style' }]"
-      [options]="{
-        title: 'Average load over last 10 minutes',
-        hAxis: {
-          title: 'Time'
-        },
-        vAxis: {
-          title: 'Average load'
-        }
-      }"
-    ></google-chart>
+    <nz-layout>
+      <nz-header>
+        <h1>Load monitor</h1>
+      </nz-header>
+      <nz-content>
+        <lm-chart
+          *ngIf="loadDataService.loadValuesOverTime$ | async as loadValues"
+          [loadValues]="loadValues"
+        ></lm-chart>
+        <div class="columns">
+          <lm-statistics
+            *ngIf="data$ | async as data"
+            [currentAverageLoad]="data.averageLoad"
+            [averageLoadOverTime]="(loadDataService.averageLoadValueOverTime$ | async) || 0"
+            [highLoadsCount]="highLoadsCount"
+            [loadRecoversCount]="loadRecoversCount"
+            [cpuCount]="data.cpuCount"
+          ></lm-statistics>
+          <lm-timeline [timelineItems]="timelineItems"></lm-timeline>
+      </div>
+      </nz-content>
+      <nz-footer>© Dawid Drelichowski</nz-footer>
+    </nz-layout>
   `,
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
-  title = 'Load monitor';
+  timelineItems: TimelineItem[] = [{
+    text: 'Monitoring started',
+    timestamp: Date.now(),
+    color: 'blue'
+  }];
 
-  private data$ = this.loadDataService.socket$ as Observable<LoadData>;
+  highLoadsCount = 0;
 
-  averageLoad$: Observable<number> = this.data$.pipe(map(data => data.averageLoad));
+  loadRecoversCount = 0;
 
-  cpuCount$: Observable<number> = this.data$.pipe(map(data => data.cpuCount));
-
-  loadValuesOverTime$ = this.loadDataService.loadValuesOverTime$.pipe(
-    map(data => data.map((value) => ['', value, value < 0.25 ? 'blue' : 'red'])),
-
-  );
-
-  averageLoadOverTime$: Observable<number> = this.loadDataService.averageLoadValueOverTime$;
-
-  chartType = ChartType;
+  data$ = this.loadDataService.socket$ as Observable<LoadData>;
 
   constructor(
-    private loadDataService: LoadDataService,
+    public loadDataService: LoadDataService,
     private loadNotificationService: LoadNotificationsService,
     private messageService: NzMessageService
   ) { }
 
   ngAfterViewInit(): void {
     this.loadDataService.start();
-    this.loadNotificationService.highLoad$.subscribe(() =>  this.messageService.error('High load!!!')); // unsubscribe!!
-    this.loadNotificationService.loadRecovered$.subscribe(() =>  this.messageService.success('Load recovered!!!')); // unsubscribe!!
+    this.loadNotificationService.highLoad$.subscribe(() => {
+      this.messageService.error('High load');
+      this.timelineItems.push({ text: 'High load', timestamp: Date.now(), color: 'red' });
+      this.highLoadsCount++;
+    }); // unsubscribe!!
+    this.loadNotificationService.loadRecovered$.subscribe(() => {
+      this.messageService.success('Load recovered');
+      this.timelineItems.push({ text: 'Load recovered', timestamp: Date.now(), color: 'green' });
+      this.loadRecoversCount++;
+    }); // unsubscribe!!
   }
 
   ngOnDestroy(): void {

@@ -13,7 +13,7 @@ export class LoadNotificationsService {
     pluck<DataSubject, number>('averageLoad'),
     timeInterval(),
     scan((milliseconds, data) => {
-      return data.value > 0.2 ? milliseconds + data.interval : 0;
+      return data.value > 1 ? milliseconds + data.interval : 0;
     }, 0),
     map(value => value > 5000),
     distinctUntilChanged()
@@ -24,7 +24,7 @@ export class LoadNotificationsService {
     switchMapTo(this.loadDataService.socket$),
     pluck<DataSubject, number>('averageLoad'),
     timeInterval(),
-    scan((milliseconds, data) => data.value < 0.5 ? milliseconds + data.interval : 0, 0),
+    scan((milliseconds, data) => data.value < 1 ? milliseconds + data.interval : 0, 0),
     map(value => value > 5000),
     distinctUntilChanged()
   );

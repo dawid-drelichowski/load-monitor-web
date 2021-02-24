@@ -1,0 +1,13 @@
+nz-header {
+  background-color: #fff;
+}
+
+nz-content {
+  padding: 32px;
+}
+
+.columns {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 32px 0;
+}
