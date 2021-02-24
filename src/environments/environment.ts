@@ -7,7 +7,7 @@ export const environment = {
   loadDataUrl: `ws://${window.location.hostname}:8080`,
   fetchDataInterval: 1000,
   dataBufferSize: 600,
-  //dataBufferSize: 6 * 10,
+  // dataBufferSize: 6 * 10,
 };
 
 /*

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './components/app/app.component';
-//import { HttpClientModule } from '@angular/common/http';
+// import { HttpClientModule } from '@angular/common/http';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzMessageModule } from 'ng-zorro-antd/message';
@@ -15,7 +15,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    //HttpClientModule,
+    // HttpClientModule,
     NzCardModule,
     NzTypographyModule,
     NzMessageModule,
