@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {TimelineItem} from '../../types/timeline-item.type';
+import { Component, Input } from '@angular/core';
+import { TimelineItem } from '../../types/timeline-item.type';
 
 @Component({
   selector: 'lm-timeline',

@@ -1,13 +1,21 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+import { Environment } from '../app/types/environment.type';
 
-export const environment = {
+export const environment: Environment = {
   production: false,
   loadDataUrl: `ws://${window.location.hostname}:8080`,
-  fetchDataInterval: 1000,
-  dataBufferSize: 600,
-  // dataBufferSize: 6 * 10,
+  highLoadMinimumValue: 0.3,
+  highLoadOrRecoverPeriod: 1000 * 30, // Time in milliseconds
+  fetchDataInterval: 1000, // Time in milliseconds
+  dataBufferSize: 60, // Number of buffer entries
+  /*
+   * fetchDataInterval and dataBufferSize are responsible for history data time frame:
+   * As example one minute history time frame:
+   * fetchDataInterval: 1000 - which is 1 second
+   * dataBufferSize: 60 - minute has 60 seconds, fetchDataInterval * dataBufferSize is 1000 * 60 = 60000 milliseconds (60 seconds)
+   */
 };
 
 /*

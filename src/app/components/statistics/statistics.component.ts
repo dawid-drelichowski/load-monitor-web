@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import {Environment} from '../../types/environment.type';
+import {EnvironmentService} from '../../services/environment.service';
 
 @Component({
   selector: 'lm-statistics',
@@ -53,9 +55,15 @@ export class StatisticsComponent {
     high: '#cf1322'
   };
 
+  private config: Environment;
+
+  constructor(environmentService: EnvironmentService) {
+    this.config = environmentService.config;
+  }
+
   getLoadStyle(load: number): Partial<NgStyleInterface> {
     return {
-      color: load < 1 ? this.colors.low : this.colors.high
+      color: load < this.config.highLoadMinimumValue ? this.colors.low : this.colors.high
     };
   }
 }
