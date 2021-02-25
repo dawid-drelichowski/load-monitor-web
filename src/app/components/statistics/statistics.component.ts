@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-import {Environment} from '../../types/environment.type';
-import {EnvironmentService} from '../../services/environment.service';
+import { Environment } from '../../types/environment.type';
+import { EnvironmentService } from '../../services/environment.service';
 
 @Component({
   selector: 'lm-statistics',
@@ -20,7 +20,7 @@ import {EnvironmentService} from '../../services/environment.service';
     <nz-statistic
       nzTitle="High loads count"
       [nzValue]="highLoadsCount"
-      [nzValueStyle]="{ color: colors.high }"
+      [nzValueStyle]="{ color: highLoadsCount ? colors.high : colors.low }"
     ></nz-statistic>
     <nz-statistic
       nzTitle="Load recovers count"

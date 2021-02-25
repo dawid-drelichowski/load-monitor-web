@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { LoadDataService } from '../../services/load-data.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { LoadData } from '../../types/load-data.type';
 import { LoadNotificationsService } from '../../services/load-notifications.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { TimelineItem } from '../../types/timeline-item.type';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'lm-app',
@@ -49,6 +50,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   data$ = this.loadDataService.socket$ as Observable<LoadData>;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     public loadDataService: LoadDataService,
     private loadNotificationService: LoadNotificationsService,
@@ -57,19 +60,28 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.loadDataService.start();
-    this.loadNotificationService.highLoad$.subscribe(() => {
-      this.messageService.error('High load');
-      this.timelineItems.push({ text: 'High load', timestamp: Date.now(), color: 'red' });
-      this.highLoadsCount++;
-    }); // unsubscribe!!
-    this.loadNotificationService.loadRecovered$.subscribe(() => {
-      this.messageService.success('Load recovered');
-      this.timelineItems.push({ text: 'Load recovered', timestamp: Date.now(), color: 'green' });
-      this.loadRecoversCount++;
-    }); // unsubscribe!!
+    this.loadNotificationService.highLoad$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => {
+        const text = 'High load';
+
+        this.messageService.error(text);
+        this.timelineItems.push({ text, timestamp: Date.now(), color: 'red' });
+        this.highLoadsCount = count;
+      });
+    this.loadNotificationService.loadRecovered$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => {
+        const text = 'Load recovered';
+
+        this.messageService.success(text);
+        this.timelineItems.push({ text, timestamp: Date.now(), color: 'green' });
+        this.loadRecoversCount = count;
+      });
   }
 
   ngOnDestroy(): void {
     this.loadDataService.stop();
+    this.destroy$.next();
   }
 }

@@ -6,8 +6,8 @@ import { Environment } from '../app/types/environment.type';
 export const environment: Environment = {
   production: false,
   loadDataUrl: `ws://${window.location.hostname}:8080`,
-  highLoadMinimumValue: 0.3,
-  highLoadOrRecoverPeriod: 1000 * 30, // Time in milliseconds
+  highLoadMinimumValue: 0.2,
+  highLoadOrRecoverPeriod: 1000 * 15, // Time in milliseconds
   fetchDataInterval: 1000, // Time in milliseconds
   dataBufferSize: 60, // Number of buffer entries
   /*
