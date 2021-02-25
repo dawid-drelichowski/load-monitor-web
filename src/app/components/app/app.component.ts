@@ -41,7 +41,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   timelineItems: TimelineItem[] = [{
     text: 'Monitoring started',
     timestamp: Date.now(),
-    color: 'blue'
+    color: 'gray'
   }];
 
   highLoadsCount = 0;

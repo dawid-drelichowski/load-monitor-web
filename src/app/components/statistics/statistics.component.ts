@@ -13,7 +13,7 @@ import { EnvironmentService } from '../../services/environment.service';
       [nzValueStyle]="getLoadStyle(currentAverageLoad)"
     ></nz-statistic>
     <nz-statistic
-      nzTitle="Average load"
+      nzTitle="Average load in time"
       [nzValue]="averageLoadOverTime | number:'1.4'"
       [nzValueStyle]="getLoadStyle(averageLoadOverTime)"
     ></nz-statistic>

@@ -14,7 +14,7 @@ import { TimelineItem } from '../../types/timeline-item.type';
       </nz-timeline-item>
     </nz-timeline>
   `,
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./timeline.component.css'],
 })
 export class TimelineComponent {
   @Input()
