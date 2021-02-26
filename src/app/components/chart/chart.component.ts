@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ChartType } from 'angular-google-charts';
 import { Environment } from '../../types/environment.type';
 import { EnvironmentService } from '../../services/environment.service';
@@ -40,6 +40,7 @@ import { EnvironmentService } from '../../services/environment.service';
     ></google-chart>
   `,
   styleUrls: ['./chart.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent {
   @Input()

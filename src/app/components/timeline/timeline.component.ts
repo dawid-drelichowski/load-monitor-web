@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TimelineItem } from '../../types/timeline-item.type';
 
 @Component({
@@ -15,6 +15,7 @@ import { TimelineItem } from '../../types/timeline-item.type';
     </nz-timeline>
   `,
   styleUrls: ['./timeline.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimelineComponent {
   @Input()

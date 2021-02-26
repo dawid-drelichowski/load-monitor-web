@@ -28,7 +28,7 @@ import { takeUntil } from 'rxjs/operators';
             [loadRecoversCount]="loadRecoversCount"
             [cpuCount]="data.cpuCount"
           ></lm-statistics>
-          <lm-timeline [timelineItems]="timelineItems"></lm-timeline>
+          <lm-timeline [timelineItems]="timelineItems.slice()"></lm-timeline>
       </div>
       </nz-content>
       <nz-footer>© Dawid Drelichowski</nz-footer>

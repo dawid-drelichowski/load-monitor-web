@@ -22,7 +22,7 @@ export class LoadDataService {
       }
       this.loadValuesBuffer.push(averageLoad);
 
-      return this.loadValuesBuffer;
+      return this.loadValuesBuffer.slice();
     })
   );
 

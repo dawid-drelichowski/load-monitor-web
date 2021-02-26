@@ -1,8 +1,3 @@
-TODO:
-do I need @angular/forms ?
-do I need @angular/router ?
-remove npm from dependencies
-
 # Load Monitor Web
 
 Web application for an average CPU load monitoring, developed in [Angular](https://angular.io/).
