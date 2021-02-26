@@ -5,6 +5,7 @@ import { Environment } from '../app/types/environment.type';
 
 export const environment: Environment = {
   production: false,
+  // Url to Load monitor WebSocket server (https://github.com/dawid-drelichowski/load-monitor-socket):
   loadDataUrl: `ws://${window.location.hostname}:8080`,
   highLoadMinimumValue: 0.3,
   highLoadOrRecoverPeriod: 1000 * 10, // Time in milliseconds
