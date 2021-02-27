@@ -59,12 +59,12 @@ This is a very basic implementation of monitor, it should be improved a bit.
 What is missing?
 
 - [ ] Better error handling
-- [ ] Design improvements
+- [ ] Re-connection to server in case of disconnection 
+- [ ] Design improvements, responsiveness
 - [ ] Implementation of missing unit tests
 - [ ] E2E tests
 - [ ] Security audit or audit tool(s) usage
 - [ ] Migration to [ESLint](https://eslint.org/)
 - [ ] Addition of [Prettier](https://prettier.io/)
-- [ ] CI/CD pipeline
 - [ ] Git hooks for linting, formatting, etc.
 
