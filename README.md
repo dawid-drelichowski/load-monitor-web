@@ -1,7 +1,7 @@
 # Load Monitor Web
 
 Web application for an average CPU load monitoring, developed in [Angular](https://angular.io/).  
-Demo version available on [https://load-monitor.web.app/](https://load-monitor.web.app/).  
+Demo version available on [http://server937162.nazwa.pl/](http://server937162.nazwa.pl/).  
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version `11.2.1`.
 
 ## Requirements
