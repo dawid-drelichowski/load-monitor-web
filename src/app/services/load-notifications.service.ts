@@ -19,20 +19,10 @@ import { Observable } from 'rxjs';
 export class LoadNotificationsService {
   config: Environment;
 
-  private highLoadEmitted = false;
-
-  private loadRecoveredEmitted = false;
-
-  private highLoadsCount = 0;
-
-  private loadRecoversCount = 0;
-
   highLoad$: Observable<number> = this.loadDataService.socket$.pipe(
     pluck<DataSubject, number>('averageLoad'),
     timeInterval(),
-    scan((milliseconds, data) => {
-      return data.value > this.config.highLoadMinimumValue ? milliseconds + data.interval : 0;
-    }, 0),
+    scan((milliseconds, data) => data.value > this.config.highLoadMinimumValue ? milliseconds + data.interval : 0, 0),
     filter(value => (value > this.config.highLoadOrRecoverPeriod) && !this.highLoadEmitted),
     map(() => {
       this.highLoadEmitted = true;
@@ -45,9 +35,7 @@ export class LoadNotificationsService {
     skipWhile(() => !this.highLoadEmitted),
     pluck<DataSubject, number>('averageLoad'),
     timeInterval(),
-    scan((milliseconds, data) => {
-      return data.value < this.config.highLoadMinimumValue ? milliseconds + data.interval : 0;
-    }, 0),
+    scan((milliseconds, data) => data.value < this.config.highLoadMinimumValue ? milliseconds + data.interval : 0, 0),
     filter(value => (value > this.config.highLoadOrRecoverPeriod) && !this.loadRecoveredEmitted),
     map(() => {
       this.loadRecoveredEmitted = true;
@@ -55,6 +43,14 @@ export class LoadNotificationsService {
       return ++this.loadRecoversCount;
     }),
   );
+
+  private highLoadEmitted = false;
+
+  private loadRecoveredEmitted = false;
+
+  private highLoadsCount = 0;
+
+  private loadRecoversCount = 0;
 
   constructor(environmentService: EnvironmentService, private loadDataService: LoadDataService) {
     this.config = environmentService.config;

@@ -64,7 +64,7 @@ What is missing?
 - [ ] Implementation of missing unit tests
 - [ ] E2E tests
 - [ ] Security audit or audit tool(s) usage
-- [ ] Migration to [ESLint](https://eslint.org/)
+- [X] Migration to [ESLint](https://eslint.org/)
 - [ ] Addition of [Prettier](https://prettier.io/)
 - [ ] Git hooks for linting, formatting, etc.
 

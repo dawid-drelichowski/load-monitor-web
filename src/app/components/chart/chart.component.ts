@@ -7,7 +7,7 @@ import { EnvironmentService } from '../../services/environment.service';
   selector: 'lm-chart',
   template: `
     <google-chart
-      [type]="ChartType.ColumnChart"
+      [type]="chartType.ColumnChart"
       [data]="data"
       [columns]="['time', 'load', { role: 'style' }]"
       [options]="{
@@ -58,7 +58,7 @@ export class ChartComponent {
       : [[0, 0, '']];
   }
 
-  ChartType = ChartType;
+  chartType = ChartType;
 
   constructor(environmentService: EnvironmentService) {
     this.config = environmentService.config;

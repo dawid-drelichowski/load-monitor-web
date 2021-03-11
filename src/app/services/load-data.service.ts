@@ -12,8 +12,6 @@ import { DataSubject } from '../types/data-subject.type';
 export class LoadDataService {
   socket$: WebSocketSubject<DataSubject> = webSocket(environment.loadDataUrl);
 
-  private loadValuesBuffer: number[] = [];
-
   loadValuesOverTime$: Observable<number[]> = this.socket$.pipe(
     pluck<DataSubject, number>('averageLoad'),
     map(averageLoad => {
@@ -33,14 +31,16 @@ export class LoadDataService {
     )
   );
 
+  private loadValuesBuffer: number[] = [];
+
   start(): void {
     this.socket$.next({
-      name: DataActionNames.Start,
+      name: DataActionNames.start,
       interval: environment.fetchDataInterval
     });
   }
 
   stop(): void {
-    this.socket$.next({ name: DataActionNames.Stop });
+    this.socket$.next({ name: DataActionNames.stop });
   }
 }

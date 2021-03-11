@@ -1,4 +1,4 @@
 export enum DataActionNames {
-  Start = 'start',
-  Stop = 'stop',
+  start = 'start',
+  stop = 'stop',
 }
