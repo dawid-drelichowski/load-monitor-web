@@ -19,7 +19,9 @@ import { EnvironmentService } from '../../services/environment.service';
         hAxis: {
           title: 'Time (seconds)',
           viewWindow: {
-            max: (this.config.fetchDataInterval * this.config.dataBufferSize) / 1000,
+            max:
+              (this.config.fetchDataInterval * this.config.dataBufferSize) /
+              1000,
             min: 0
           },
           gridlines: {
@@ -28,7 +30,7 @@ import { EnvironmentService } from '../../services/environment.service';
         },
         vAxis: {
           title: 'Average load',
-          viewWindow:{
+          viewWindow: {
             max: this.config.highLoadMinimumValue * 2,
             min: 0
           },
@@ -51,10 +53,11 @@ export class ChartComponent {
   get data(): (string | number)[][] {
     return this.loadValues.length > 1
       ? this.loadValues.map((value, index) => [
-        (index * this.config.fetchDataInterval * this.config.dataBufferSize) / (1000 * this.config.dataBufferSize),
-        value,
-        value < this.config.highLoadMinimumValue ? '#3f8600' : '#cf1322'
-      ])
+          (index * this.config.fetchDataInterval * this.config.dataBufferSize) /
+            (1000 * this.config.dataBufferSize),
+          value,
+          value < this.config.highLoadMinimumValue ? '#3f8600' : '#cf1322',
+        ])
       : [[0, 0, '']];
   }
 

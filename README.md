@@ -65,6 +65,6 @@ What is missing?
 - [ ] E2E tests
 - [ ] Security audit or audit tool(s) usage
 - [X] Migration to [ESLint](https://eslint.org/)
-- [ ] Addition of [Prettier](https://prettier.io/)
+- [X] Addition of [Prettier](https://prettier.io/)
 - [ ] Git hooks for linting, formatting, etc.
 

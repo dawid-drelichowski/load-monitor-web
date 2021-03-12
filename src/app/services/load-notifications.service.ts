@@ -6,7 +6,7 @@ import {
   pluck,
   scan,
   skipWhile,
-  timeInterval
+  timeInterval,
 } from 'rxjs/operators';
 import { DataSubject } from '../types/data-subject.type';
 import { EnvironmentService } from './environment.service';
@@ -14,7 +14,7 @@ import { Environment } from '../types/environment.type';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoadNotificationsService {
   config: Environment;
@@ -22,8 +22,17 @@ export class LoadNotificationsService {
   highLoad$: Observable<number> = this.loadDataService.socket$.pipe(
     pluck<DataSubject, number>('averageLoad'),
     timeInterval(),
-    scan((milliseconds, data) => data.value > this.config.highLoadMinimumValue ? milliseconds + data.interval : 0, 0),
-    filter(value => (value > this.config.highLoadOrRecoverPeriod) && !this.highLoadEmitted),
+    scan(
+      (milliseconds, data) =>
+        data.value > this.config.highLoadMinimumValue
+          ? milliseconds + data.interval
+          : 0,
+      0,
+    ),
+    filter(
+      (value) =>
+        value > this.config.highLoadOrRecoverPeriod && !this.highLoadEmitted,
+    ),
     map(() => {
       this.highLoadEmitted = true;
       this.loadRecoveredEmitted = false;
@@ -35,8 +44,18 @@ export class LoadNotificationsService {
     skipWhile(() => !this.highLoadEmitted),
     pluck<DataSubject, number>('averageLoad'),
     timeInterval(),
-    scan((milliseconds, data) => data.value < this.config.highLoadMinimumValue ? milliseconds + data.interval : 0, 0),
-    filter(value => (value > this.config.highLoadOrRecoverPeriod) && !this.loadRecoveredEmitted),
+    scan(
+      (milliseconds, data) =>
+        data.value < this.config.highLoadMinimumValue
+          ? milliseconds + data.interval
+          : 0,
+      0,
+    ),
+    filter(
+      (value) =>
+        value > this.config.highLoadOrRecoverPeriod &&
+        !this.loadRecoveredEmitted,
+    ),
     map(() => {
       this.loadRecoveredEmitted = true;
       this.highLoadEmitted = false;
@@ -52,7 +71,10 @@ export class LoadNotificationsService {
 
   private loadRecoversCount = 0;
 
-  constructor(environmentService: EnvironmentService, private loadDataService: LoadDataService) {
+  constructor(
+    environmentService: EnvironmentService,
+    private loadDataService: LoadDataService,
+  ) {
     this.config = environmentService.config;
   }
 }

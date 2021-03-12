@@ -3,7 +3,7 @@ import { Environment } from '../types/environment.type';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EnvironmentService {
   config: Environment = environment;

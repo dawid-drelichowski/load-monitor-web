@@ -9,12 +9,12 @@ import { EnvironmentService } from '../../services/environment.service';
     <h2>Statistics</h2>
     <nz-statistic
       nzTitle="Current average load"
-      [nzValue]="currentAverageLoad | number:'1.4'"
+      [nzValue]="currentAverageLoad | number: '1.4'"
       [nzValueStyle]="getLoadStyle(currentAverageLoad)"
     ></nz-statistic>
     <nz-statistic
       nzTitle="Average load in time"
-      [nzValue]="averageLoadOverTime | number:'1.4'"
+      [nzValue]="averageLoadOverTime | number: '1.4'"
       [nzValueStyle]="getLoadStyle(averageLoadOverTime)"
     ></nz-statistic>
     <nz-statistic
@@ -32,7 +32,7 @@ import { EnvironmentService } from '../../services/environment.service';
       [nzValue]="cpuCount | number"
     ></nz-statistic>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatisticsComponent {
   @Input()
@@ -52,7 +52,7 @@ export class StatisticsComponent {
 
   colors: Record<string, string> = {
     low: '#3f8600',
-    high: '#cf1322'
+    high: '#cf1322',
   };
 
   private config: Environment;
@@ -63,7 +63,10 @@ export class StatisticsComponent {
 
   getLoadStyle(load: number): Partial<NgStyleInterface> {
     return {
-      color: load < this.config.highLoadMinimumValue ? this.colors.low : this.colors.high
+      color:
+        load < this.config.highLoadMinimumValue
+          ? this.colors.low
+          : this.colors.high,
     };
   }
 }

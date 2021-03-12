@@ -10,7 +10,7 @@ import { TimelineItem } from '../../types/timeline-item.type';
         *ngFor="let item of timelineItems; trackBy: trackByTimelineItems"
         [nzColor]="item.color"
       >
-        {{ item.timestamp | date:'medium' }}, {{ item.text }}
+        {{ item.timestamp | date: 'medium' }}, {{ item.text }}
       </nz-timeline-item>
     </nz-timeline>
   `,

@@ -30,6 +30,6 @@ import { TimelineComponent } from './components/timeline/timeline.component';
     GoogleChartsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

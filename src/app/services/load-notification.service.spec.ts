@@ -9,39 +9,44 @@ describe('LoadNotificationsService', () => {
   let environmentServiceMock: EnvironmentService;
 
   beforeEach(() => {
-    loadDataServiceMock = {
+    loadDataServiceMock = ({
       socket$: new Subject(),
-    } as unknown as LoadDataService;
-    environmentServiceMock = {
+    } as unknown) as LoadDataService;
+    environmentServiceMock = ({
       config: {
         highLoadOrRecoverPeriod: 10,
         highLoadMinimumValue: 1,
       },
-    } as unknown as EnvironmentService;
-    loadNotificationsService = new LoadNotificationsService(environmentServiceMock, loadDataServiceMock);
+    } as unknown) as EnvironmentService;
+    loadNotificationsService = new LoadNotificationsService(
+      environmentServiceMock,
+      loadDataServiceMock,
+    );
   });
 
   describe('highLoad$', () => {
-    it('should emit when high load', done => {
-      loadNotificationsService.highLoad$.subscribe(count => {
+    it('should emit when high load', (done) => {
+      loadNotificationsService.highLoad$.subscribe((count) => {
         expect(count).toStrictEqual(1);
         clearInterval(intervalId);
         done();
       });
 
       const intervalId = setInterval(
-        () => loadDataServiceMock.socket$.next({ averageLoad: 1.5, cpuCount: 4 }), 1
+        () =>
+          loadDataServiceMock.socket$.next({ averageLoad: 1.5, cpuCount: 4 }),
+        1,
       );
     });
 
-    it('should emit when high load, recovered and high load again', done => {
+    it('should emit when high load, recovered and high load again', (done) => {
       let averageLoad = 1.5;
 
-      loadNotificationsService.loadRecovered$.subscribe(count => {
+      loadNotificationsService.loadRecovered$.subscribe((count) => {
         expect(count).toStrictEqual(1);
         averageLoad = 1.5;
       });
-      loadNotificationsService.highLoad$.subscribe(count => {
+      loadNotificationsService.highLoad$.subscribe((count) => {
         switch (count) {
           case 1:
             averageLoad = 0.5;
@@ -53,14 +58,15 @@ describe('LoadNotificationsService', () => {
       });
 
       const intervalId = setInterval(
-        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }), 1
+        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }),
+        1,
       );
     });
 
-    it('should emit twice when high load twice and recovered twice', done => {
+    it('should emit twice when high load twice and recovered twice', (done) => {
       let averageLoad = 1.5;
 
-      loadNotificationsService.loadRecovered$.subscribe(count => {
+      loadNotificationsService.loadRecovered$.subscribe((count) => {
         switch (count) {
           case 1:
           case 2:
@@ -68,7 +74,7 @@ describe('LoadNotificationsService', () => {
             break;
         }
       });
-      loadNotificationsService.highLoad$.subscribe(count => {
+      loadNotificationsService.highLoad$.subscribe((count) => {
         switch (count) {
           case 1:
           case 2:
@@ -81,34 +87,40 @@ describe('LoadNotificationsService', () => {
       });
 
       const intervalId = setInterval(
-        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }), 1
+        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }),
+        1,
       );
     });
   });
 
   describe('loadRecovered$', () => {
-    it('should emit when load recovered', done => {
+    it('should emit when load recovered', (done) => {
       let averageLoad = 1.5;
 
-      loadNotificationsService.highLoad$.subscribe(count => {
+      loadNotificationsService.highLoad$.subscribe((count) => {
         expect(count).toStrictEqual(1);
         averageLoad = 0.5;
       });
-      loadNotificationsService.loadRecovered$.subscribe(count => {
-        expect(count).toStrictEqual(1);
-        clearInterval(intervalId);
-        done();
-      }, () => {}, () => console.log('loadRecovered$ completed'));
+      loadNotificationsService.loadRecovered$.subscribe(
+        (count) => {
+          expect(count).toStrictEqual(1);
+          clearInterval(intervalId);
+          done();
+        },
+        () => {},
+        () => console.log('loadRecovered$ completed'),
+      );
 
       const intervalId = setInterval(
-        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }), 1
+        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }),
+        1,
       );
     });
 
-    it('should emit when load recovered, high load and recovered again', done => {
+    it('should emit when load recovered, high load and recovered again', (done) => {
       let averageLoad = 1.5;
 
-      loadNotificationsService.highLoad$.subscribe(count => {
+      loadNotificationsService.highLoad$.subscribe((count) => {
         switch (count) {
           case 1:
           case 2:
@@ -116,7 +128,7 @@ describe('LoadNotificationsService', () => {
             break;
         }
       });
-      loadNotificationsService.loadRecovered$.subscribe(count => {
+      loadNotificationsService.loadRecovered$.subscribe((count) => {
         switch (count) {
           case 1:
             averageLoad = 1.5;
@@ -128,14 +140,15 @@ describe('LoadNotificationsService', () => {
       });
 
       const intervalId = setInterval(
-        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }), 1
+        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }),
+        1,
       );
     });
 
-    it('should emit twice when load recovered twice and high load triple', done => {
+    it('should emit twice when load recovered twice and high load triple', (done) => {
       let averageLoad = 1.5;
 
-      loadNotificationsService.highLoad$.subscribe(count => {
+      loadNotificationsService.highLoad$.subscribe((count) => {
         switch (count) {
           case 1:
           case 2:
@@ -144,7 +157,7 @@ describe('LoadNotificationsService', () => {
             break;
         }
       });
-      loadNotificationsService.loadRecovered$.subscribe(count => {
+      loadNotificationsService.loadRecovered$.subscribe((count) => {
         switch (count) {
           case 1:
           case 2:
@@ -157,7 +170,8 @@ describe('LoadNotificationsService', () => {
       });
 
       const intervalId = setInterval(
-        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }), 1
+        () => loadDataServiceMock.socket$.next({ averageLoad, cpuCount: 4 }),
+        1,
       );
     });
   });

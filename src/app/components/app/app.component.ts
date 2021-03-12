@@ -1,4 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+} from '@angular/core';
 import { LoadDataService } from '../../services/load-data.service';
 import { Observable, Subject } from 'rxjs';
 import { LoadData } from '../../types/load-data.type';
@@ -23,13 +28,15 @@ import { takeUntil } from 'rxjs/operators';
           <lm-statistics
             *ngIf="data$ | async as data"
             [currentAverageLoad]="data.averageLoad"
-            [averageLoadOverTime]="(loadDataService.averageLoadValueOverTime$ | async) || 0"
+            [averageLoadOverTime]="
+              (loadDataService.averageLoadValueOverTime$ | async) || 0
+            "
             [highLoadsCount]="highLoadsCount"
             [loadRecoversCount]="loadRecoversCount"
             [cpuCount]="data.cpuCount"
           ></lm-statistics>
           <lm-timeline [timelineItems]="timelineItems.slice()"></lm-timeline>
-      </div>
+        </div>
       </nz-content>
       <nz-footer>© Dawid Drelichowski</nz-footer>
     </nz-layout>
@@ -38,11 +45,13 @@ import { takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
-  timelineItems: TimelineItem[] = [{
-    text: 'Monitoring started',
-    timestamp: Date.now(),
-    color: 'gray'
-  }];
+  timelineItems: TimelineItem[] = [
+    {
+      text: 'Monitoring started',
+      timestamp: Date.now(),
+      color: 'gray',
+    },
+  ];
 
   highLoadsCount = 0;
 
@@ -55,14 +64,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   constructor(
     public loadDataService: LoadDataService,
     private loadNotificationService: LoadNotificationsService,
-    private messageService: NzMessageService
-  ) { }
+    private messageService: NzMessageService,
+  ) {}
 
   ngAfterViewInit(): void {
     this.loadDataService.start();
     this.loadNotificationService.highLoad$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(count => {
+      .subscribe((count) => {
         const text = 'High load';
 
         this.messageService.error(text);
@@ -71,11 +80,15 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       });
     this.loadNotificationService.loadRecovered$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(count => {
+      .subscribe((count) => {
         const text = 'Load recovered';
 
         this.messageService.success(text);
-        this.timelineItems.push({ text, timestamp: Date.now(), color: 'green' });
+        this.timelineItems.push({
+          text,
+          timestamp: Date.now(),
+          color: 'green',
+        });
         this.loadRecoversCount = count;
       });
   }
